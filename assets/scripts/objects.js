@@ -1,8 +1,33 @@
 const addMovieBtn = document.getElementById("add-movie-btn");
 const searchBtn = document.getElementById("search-btn");
 
+const movies = [];
 
-const movie = [];
+const renderMovies = () => {
+  const movieList = document.getElementById("movie-list");
+
+  movieList.innerHTML = "";
+
+  if (movies.length === 0) {
+    movieList.classList.remove("visible");
+    return;
+  } else {
+    movieList.classList.add("visible");
+  }
+  movieList.innerHTML = "";
+
+  movies.forEach((movie) => {
+    const movieEl = document.createElement("li");
+    let text = movie.info.title + " - ";
+    for (const key in movie.info) {
+      if (key !== "title") {
+        text = text + `${key} : ${movie.info[key]}`;
+      }
+    }
+    movieEl.textContent = text;
+    movieList.append(movieEl);
+  });
+};
 
 const addMovieHandler = () => {
   const title = document.getElementById("title").value;
@@ -18,15 +43,15 @@ const addMovieHandler = () => {
   }
 
   const newMovie = {
-    info : {
-        title,
-        [extraName] : extraValue
+    info: {
+      title,
+      [extraName]: extraValue,
     },
-    id : Math.random()
-  }
+    id: Math.random(),
+  };
 
-  movie.push(newMovie);
-  console.log(newMovie);
+  movies.push(newMovie);
+  renderMovies();
 };
 
-addMovieBtn.addEventListener('click', addMovieHandler);
+addMovieBtn.addEventListener("click", addMovieHandler);
